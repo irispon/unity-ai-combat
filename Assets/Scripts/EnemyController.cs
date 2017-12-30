@@ -23,6 +23,8 @@ public class EnemyController : MonoBehaviour {
 
     static Animator anim;
 
+    private AudioSource swingAudioSource;
+
     private CharacterState characterState;
     private Collider m_WeaponCollider;
 
@@ -44,7 +46,9 @@ public class EnemyController : MonoBehaviour {
                 break;
             }
         }
+
         m_WeaponCollider.enabled = false;
+        swingAudioSource = this.GetComponent<AudioSource>();
     }
 	
 	// Update is called once per frame
@@ -79,7 +83,7 @@ public class EnemyController : MonoBehaviour {
             }
             else
             {
-                //Attack();
+                Attack();
             }
 
         }
@@ -148,6 +152,7 @@ public class EnemyController : MonoBehaviour {
         m_IsAttacking = true;
         anim.SetBool("isAttacking", true);
         StartCoroutine(EnableWeaponCollider());
+        StartCoroutine(PlayWeaponSound());
         StartCoroutine(DisableWeaponCollider());
     }
 
@@ -164,6 +169,12 @@ public class EnemyController : MonoBehaviour {
         Debug.Log("Collider's disabled");
         m_WeaponCollider.enabled = false;
         m_IsAttacking = false;
+    }
+
+    private IEnumerator PlayWeaponSound()
+    {
+        yield return new WaitForSeconds(.7f);
+        swingAudioSource.Play();
     }
 
     // kill and cleanup enemy

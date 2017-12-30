@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour {
     private bool m_IsAttacking;
     static Animator anim;
 
+    private AudioSource swingAudioSource;
+
     private Collider m_WeaponCollider;
 
     // Use this for initialization
@@ -36,6 +38,9 @@ public class PlayerController : MonoBehaviour {
                 break;
             }
         }
+
+        swingAudioSource = this.GetComponent<AudioSource>();
+
         m_WeaponCollider.enabled = false;
 	}
 	
@@ -98,9 +103,10 @@ public class PlayerController : MonoBehaviour {
     {
         Debug.Log("Player attack begins");
         m_IsAttacking = true;
-        ClearAnim();
+        ClearAnim();        
         anim.SetBool("isAttacking", true);
         StartCoroutine(EnableWeaponCollider());
+        StartCoroutine(PlayWeaponSound());
         StartCoroutine(DisableWeaponCollider());
     }
 
@@ -119,4 +125,10 @@ public class PlayerController : MonoBehaviour {
         m_IsAttacking = false;
         Debug.Log("Player attack ends");
     }  
+
+    private IEnumerator PlayWeaponSound()
+    {
+        yield return new WaitForSeconds(.8f);
+        swingAudioSource.Play();
+    }
 }
