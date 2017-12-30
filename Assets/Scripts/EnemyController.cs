@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EnemyController : MonoBehaviour {
+public class EnemyController : HumanoidController {
 
     public Transform m_Player;
-    public CharacterState m_CharacterState;
-    public Collider[] colliders;
 
     public float m_RotationSpeed = 0.2f;
-    public float m_MoveSpeed = 5.0f;
     public float m_AggroDistance = 10.0f;
     public float m_AggroAngle = 90.0f;
 
@@ -18,41 +15,15 @@ public class EnemyController : MonoBehaviour {
     private float m_PlayerDistance;
     private float m_PlayerAngle;
 
-    private bool m_IsDead;
-    private bool m_IsAttacking;
-
-    static Animator anim;
-
-    private AudioSource swingAudioSource;
-
-    private CharacterState characterState;
-    private Collider m_WeaponCollider;
-
     // Use this for initialization
-    void Start () 
-	{
-        anim = GetComponent<Animator>();
-        characterState = this.GetComponentInParent<CharacterState>();
-
-        m_IsDead = false;
-        m_IsAttacking = false;
-
-        Collider[] colliders = this.GetComponentsInChildren<Collider>();
-        foreach (Collider collider in colliders)
-        {
-            if (collider.CompareTag("EnemyWeapon"))
-            {
-                m_WeaponCollider = collider;
-                break;
-            }
-        }
-
-        m_WeaponCollider.enabled = false;
-        swingAudioSource = this.GetComponent<AudioSource>();
+    protected override void Start()
+    {
+        m_WeaponColliderName = "EnemyWeapon";
+        base.Start();
     }
-	
-	// Update is called once per frame
-	void Update () 
+
+    // Update is called once per frame
+    override protected void Update () 
 	{
         if (m_IsDead) return;
 
@@ -85,9 +56,7 @@ public class EnemyController : MonoBehaviour {
             {
                 Attack();
             }
-
         }
-
         // otherwise, just stand around
         else
         {
@@ -122,14 +91,6 @@ public class EnemyController : MonoBehaviour {
         this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(-m_PlayerDirection), m_RotationSpeed);
     }
 
-    // clear's all animations
-    private void ClearAnim()
-    {
-        anim.SetBool("isIdle", false);
-        anim.SetBool("isWalking", false);
-        anim.SetBool("isAttacking", false);
-    }
-
     // char idle
     private void Idle()
     {
@@ -143,52 +104,5 @@ public class EnemyController : MonoBehaviour {
         ClearAnim();
         anim.SetBool("isWalking", true);
         this.transform.Translate(0, 0, m_MoveSpeed * Time.deltaTime);
-    }
-
-    // char attack
-    private void Attack()
-    {
-
-        m_IsAttacking = true;
-        anim.SetBool("isAttacking", true);
-        StartCoroutine(EnableWeaponCollider());
-        StartCoroutine(PlayWeaponSound());
-        StartCoroutine(DisableWeaponCollider());
-    }
-
-    private IEnumerator EnableWeaponCollider()
-    {
-        yield return new WaitForSeconds(.6f);
-        Debug.Log("Collider's enabled");
-        m_WeaponCollider.enabled = true;
-    }
-
-    private IEnumerator DisableWeaponCollider()
-    {
-        yield return new WaitForSeconds(1.2f);
-        Debug.Log("Collider's disabled");
-        m_WeaponCollider.enabled = false;
-        m_IsAttacking = false;
-    }
-
-    private IEnumerator PlayWeaponSound()
-    {
-        yield return new WaitForSeconds(.7f);
-        swingAudioSource.Play();
-    }
-
-    // kill and cleanup enemy
-    private void MakeDead()
-    {
-        ClearAnim();
-        anim.SetBool("isDead", true);
-        
-        // disable all colliders
-        foreach(Collider c in colliders)
-        {
-            Debug.Log("Disable collider: " + c.ToString());
-            c.enabled = false;
-        }
-        m_IsDead = true;
     }
 }
