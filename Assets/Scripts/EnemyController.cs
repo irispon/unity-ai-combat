@@ -52,14 +52,16 @@ public class EnemyController : HumanoidController {
             {
                 Walk();
             }
-            else
+            else if(!m_IsAttacking)
             {
+                Debug.Log("enemy begin attack");
                 Attack();
             }
         }
         // otherwise, just stand around
         else
         {
+            Debug.Log("enemy idle");
             Idle();
         }
     }

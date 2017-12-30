@@ -60,7 +60,7 @@ public class HumanoidController : MonoBehaviour
     // char attack
     protected void Attack()
     {
-        Debug.Log("Player attack begins");
+        //Debug.Log("Player attack begins");
         m_IsAttacking = true;
         ClearAnim();
         anim.SetBool("isAttacking", true);
@@ -72,17 +72,15 @@ public class HumanoidController : MonoBehaviour
     protected IEnumerator EnableWeaponCollider()
     {
         yield return new WaitForSeconds(.6f);
-        Debug.Log("Collider's enabled");
-        m_WeaponCollider.enabled = true;
+         m_WeaponCollider.enabled = true;
     }
 
     protected IEnumerator DisableWeaponCollider()
     {
-        yield return new WaitForSeconds(1.2f);
-        Debug.Log("Collider's disabled");
+        yield return new WaitForSeconds(1.5f);
         m_WeaponCollider.enabled = false;
         m_IsAttacking = false;
-        Debug.Log("Player attack ends");
+        //Debug.Log("Player attack ends");
     }
 
     protected IEnumerator PlayWeaponSound()

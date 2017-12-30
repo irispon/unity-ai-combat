@@ -225,7 +225,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_MoveSpeed: 10
-  m_RotationSpeed: 0.5
   m_CharacterState: {fileID: 87518684}
 --- !u!114 &87518681
 MonoBehaviour:
@@ -239,7 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   opponent: Enemy
-  m_WeaponDamage: 90
+  m_WeaponDamage: 20
 --- !u!136 &87518682
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2939,11 +2938,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c52c0eed6ecd13044a48d81c4c6f4f4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Player: {fileID: 87518679}
-  m_CharacterState: {fileID: 1367685208}
-  colliders: []
-  m_RotationSpeed: 0.1
   m_MoveSpeed: 5
+  m_CharacterState: {fileID: 1367685208}
+  m_Player: {fileID: 87518679}
+  m_RotationSpeed: 0.1
   m_AggroDistance: 30
   m_AggroAngle: 90
 --- !u!95 &1367685205
@@ -2976,7 +2974,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   opponent: Player
-  m_WeaponDamage: 90
+  m_WeaponDamage: 20
 --- !u!4 &1367685207
 Transform:
   m_ObjectHideFlags: 0

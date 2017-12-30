@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class HitDetector : MonoBehaviour {
 
     public string opponent;
-    public int m_WeaponDamage = 90;
+    public int m_WeaponDamage = 20;
 
     private CharacterState m_CharacterState;
 
