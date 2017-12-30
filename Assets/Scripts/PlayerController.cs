@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterController : MonoBehaviour {
+public class PlayerController : MonoBehaviour {
 
     public float m_MoveSpeed = 10.0f;
     public float m_RotationSpeed = 10.0f;
