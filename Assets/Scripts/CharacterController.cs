@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class CharacterController : MonoBehaviour {
 
     public float m_MoveSpeed = 10.0f;
-    public float m_RotationSpeed = 100.0f;
+    public float m_RotationSpeed = 10.0f;
 
     private float m_Move;
     private float m_Strafe;
@@ -14,8 +14,10 @@ public class CharacterController : MonoBehaviour {
     public CharacterState m_CharacterState;
 
     private bool m_IsDead;
+    private bool m_IsAttacking;
     static Animator anim;
 
+    private Collider m_WeaponCollider;
 
     // Use this for initialization
     void Start () 
@@ -23,6 +25,18 @@ public class CharacterController : MonoBehaviour {
         anim = GetComponent<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
         m_IsDead = false;
+        m_IsAttacking = false;
+
+        Collider[] colliders = this.GetComponentsInChildren<Collider>();
+        foreach(Collider collider in colliders)
+        {
+            if(collider.CompareTag("PlayerWeapon"))
+            {
+                m_WeaponCollider = collider;
+                break;
+            }
+        }
+        m_WeaponCollider.enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -44,9 +58,9 @@ public class CharacterController : MonoBehaviour {
 
         transform.Translate(m_Strafe, 0, m_Move);
 
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButton("Fire1") && ! m_IsAttacking)
         {
-            anim.SetBool("isAttacking", true);
+            Attack();
         }
         else
         {
@@ -63,28 +77,11 @@ public class CharacterController : MonoBehaviour {
             anim.SetBool("isWalking", false);
             anim.SetBool("isIdle", true);
         }
-    }
 
-    // char walk
-    private void Walk()
-    {
-        ClearAnim();
-        anim.SetBool("isWalking", true);
-        this.transform.Translate(m_Strafe, 0.0f, m_Move);
-    }
-
-    // char idle
-    private void Idle()
-    {
-        ClearAnim();
-        anim.SetBool("isIdle", true);
-    }
-
-    // char attack
-    private void Attack()
-    {
-        ClearAnim();
-        anim.SetBool("isAttacking", true);
+        if (Input.GetKeyDown("escape"))
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
 
     // clear's all animations
@@ -95,4 +92,31 @@ public class CharacterController : MonoBehaviour {
         anim.SetBool("isAttacking", false);
         anim.SetBool("isDead", false);
     }
+
+    // char attack
+    private void Attack()
+    {
+        Debug.Log("Player attack begins");
+        m_IsAttacking = true;
+        ClearAnim();
+        anim.SetBool("isAttacking", true);
+        StartCoroutine(EnableWeaponCollider());
+        StartCoroutine(DisableWeaponCollider());
+    }
+
+    private IEnumerator EnableWeaponCollider()
+    {
+        yield return new WaitForSeconds(.6f);
+        Debug.Log("Collider's enabled");
+        m_WeaponCollider.enabled = true;
+    }
+
+    private IEnumerator DisableWeaponCollider()
+    {
+        yield return new WaitForSeconds(1.2f);
+        Debug.Log("Collider's disabled");
+        m_WeaponCollider.enabled = false;
+        m_IsAttacking = false;
+        Debug.Log("Player attack ends");
+    }  
 }
