@@ -7,7 +7,8 @@ public class HumanoidController : MonoBehaviour
 {    
     public float m_MoveSpeed = 10.0f;
     public CharacterState m_CharacterState;
-    public AudioClip m_WeaponSwingAC;
+    public AudioClip m_WeaponSwingSound;
+    public AudioClip m_DeathSound;
 
     protected float m_Move;
     protected float m_Strafe;
@@ -15,7 +16,7 @@ public class HumanoidController : MonoBehaviour
     public bool m_IsAttacking;
 
     protected Animator anim;
-    protected AudioSource swingAudioSource;
+    protected AudioSource m_AudioSource;
     protected Collider m_WeaponCollider;
     protected string m_WeaponColliderName = "Weapon";
 
@@ -38,7 +39,7 @@ public class HumanoidController : MonoBehaviour
             }
         }
 
-        swingAudioSource = this.GetComponent<AudioSource>();
+        m_AudioSource = this.GetComponent<AudioSource>();
 
         m_WeaponCollider.enabled = false;
     }
@@ -87,7 +88,7 @@ public class HumanoidController : MonoBehaviour
     protected IEnumerator PlayWeaponSound()
     {
         yield return new WaitForSeconds(.8f);
-        swingAudioSource.PlayOneShot(m_WeaponSwingAC);
+        m_AudioSource.PlayOneShot(m_WeaponSwingSound);
     }
 
     // kill and cleanup enemy
@@ -95,6 +96,7 @@ public class HumanoidController : MonoBehaviour
     {
         ClearAnim();
         anim.SetBool("isDead", true);
+        m_AudioSource.PlayOneShot(m_DeathSound);
 
         // disable all colliders
         foreach (Collider c in m_AllColliders)
