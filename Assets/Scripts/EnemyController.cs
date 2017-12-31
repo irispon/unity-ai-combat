@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class EnemyController : HumanoidController {
 
-    public Transform m_Player;
+    public GameObject m_Player;
 
     public float m_RotationSpeed = 0.2f;
     public float m_AggroDistance = 10.0f;
@@ -15,6 +15,13 @@ public class EnemyController : HumanoidController {
     private float m_PlayerDistance;
     private float m_PlayerAngle;
 
+    private bool m_IsSideStepping = false;
+    private int m_SideStepDirection = 0;
+    private float m_SideStepDuration = 1.0f;
+    private float m_SideStepCooldownDuration = 10.0f;
+    private float m_SideStepEnd = 0;
+    private float m_SideStepCooldownEnd = 0;
+
     // Use this for initialization
     protected override void Start()
     {
@@ -23,55 +30,68 @@ public class EnemyController : HumanoidController {
     }
 
     // Update is called once per frame
-    override protected void Update () 
-	{
+    override protected void Update()
+    {
         if (m_IsDead) return;
 
         // if killed, do dead stuff
         if (m_CharacterState.m_Health <= 0)
         {
             MakeDead();
-            return;            
+            return;
         }
 
         CalculatePlayerPositioning();
 
         // run away if dying
-        if(m_CharacterState.IsDying())
+        if (m_CharacterState.IsDying())
         {
             AboutFace();
             Walk();
         }
 
+        // if sidestepping, continue to sidestep
+        else if (m_IsSideStepping)
+        {
+            SideStep();
+        }
+
         // if aggro'd, approach and attack
         else if (IsAggroed())
-        {            
-            Face();            
+        {
+            Face();
 
+            // approach
             if (m_PlayerDirection.magnitude > 4)
             {
                 Walk();
             }
-            else if(!m_IsAttacking)
+
+            // avoid attacks
+            else if (IsPlayerIsAttacking() && ! IsSideStepOnCooldown())
             {
-                Debug.Log("enemy begin attack");
+                StartSideStep();
+            }
+
+            // attack
+            else if (!m_IsAttacking)
+            {
                 Attack();
             }
         }
         // otherwise, just stand around
         else
         {
-            Debug.Log("enemy idle");
             Idle();
         }
-    }
+    }    
 
     private void CalculatePlayerPositioning()
     {
-        m_PlayerDirection = m_Player.position - this.transform.position;
+        m_PlayerDirection = m_Player.transform.position - this.transform.position;
         m_PlayerDirection.y = 0;
 
-        m_PlayerDistance = Vector3.Distance(this.transform.position, m_Player.position);
+        m_PlayerDistance = Vector3.Distance(this.transform.position, m_Player.transform.position);
         m_PlayerAngle = Vector3.Angle(m_PlayerDirection, this.transform.forward);
     }
 
@@ -106,5 +126,43 @@ public class EnemyController : HumanoidController {
         ClearAnim();
         anim.SetBool("isWalking", true);
         this.transform.Translate(0, 0, m_MoveSpeed * Time.deltaTime);
+    }
+
+    // returns whether the player is in the process of an attack
+    private bool IsPlayerIsAttacking()
+    {
+        return m_Player.GetComponent<PlayerController>().m_IsAttacking;
+    }
+
+    // returns whether sidestep is on cooldown or not
+    private bool IsSideStepOnCooldown()
+    {
+        return m_SideStepCooldownEnd > Time.time;
+    }
+
+    // char detects an attack and attempts to strafe around the player
+    private void StartSideStep()
+    {
+        Debug.Log("Starting sidestep");
+        m_IsSideStepping = true;
+        m_SideStepEnd = Time.time + m_SideStepDuration;
+        m_SideStepCooldownEnd = Time.time + m_SideStepCooldownDuration;
+        m_SideStepDirection = Random.value > 0.5f ? 1 : -1;
+        SideStep();
+    }
+
+    // char strafes around char (avoiding attacks)
+    private void SideStep()
+    {
+        if(m_SideStepEnd < Time.time)
+        {
+            Debug.Log("Ending sidestep");
+            m_IsSideStepping = false;
+            return;
+        }
+        ClearAnim();
+        anim.SetBool("isWalking", true);
+        Face();
+        this.transform.Translate(m_MoveSpeed * m_SideStepDirection * 2 * Time.deltaTime, 0, 0);
     }
 }

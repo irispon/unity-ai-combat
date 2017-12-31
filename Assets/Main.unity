@@ -226,6 +226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MoveSpeed: 10
   m_CharacterState: {fileID: 87518684}
+  m_IsAttacking: 0
 --- !u!114 &87518681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2940,7 +2941,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MoveSpeed: 5
   m_CharacterState: {fileID: 1367685208}
-  m_Player: {fileID: 87518679}
+  m_IsAttacking: 0
+  m_Player: {fileID: 87518678}
   m_RotationSpeed: 0.1
   m_AggroDistance: 30
   m_AggroAngle: 90

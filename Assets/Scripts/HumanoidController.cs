@@ -11,7 +11,7 @@ public class HumanoidController : MonoBehaviour
     protected float m_Move;
     protected float m_Strafe;
     protected bool m_IsDead;
-    protected bool m_IsAttacking;
+    public bool m_IsAttacking;
 
     protected Animator anim;
     protected AudioSource swingAudioSource;
@@ -60,7 +60,7 @@ public class HumanoidController : MonoBehaviour
     // char attack
     protected void Attack()
     {
-        //Debug.Log("Player attack begins");
+        Debug.Log("Player attack begins");
         m_IsAttacking = true;
         ClearAnim();
         anim.SetBool("isAttacking", true);
