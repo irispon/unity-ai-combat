@@ -17,8 +17,8 @@ public class EnemyController : HumanoidController {
 
     private bool m_IsSideStepping = false;
     private int m_SideStepDirection = 0;
-    private float m_SideStepDuration = 1.0f;
-    private float m_SideStepCooldownDuration = 10.0f;
+    private float m_SideStepDuration = 0.4f;
+    private float m_SideStepCooldownDuration = 6.0f;
     private float m_SideStepEnd = 0;
     private float m_SideStepCooldownEnd = 0;
 
@@ -159,6 +159,7 @@ public class EnemyController : HumanoidController {
         m_IsSideStepping = true;
         m_SideStepEnd = Time.time + m_SideStepDuration;
         m_SideStepCooldownEnd = Time.time + m_SideStepCooldownDuration;
+        // pick a random direction
         m_SideStepDirection = Random.value > 0.5f ? 1 : -1;
         SideStep();
     }
@@ -175,6 +176,6 @@ public class EnemyController : HumanoidController {
         ClearAnim();
         anim.SetBool("isWalking", true);
         Face();
-        this.transform.Translate(m_MoveSpeed * m_SideStepDirection * 2 * Time.deltaTime, 0, 0);
+        this.transform.Translate(m_MoveSpeed * m_SideStepDirection * 3.0f * Time.deltaTime, 0, 0);
     }
 }
