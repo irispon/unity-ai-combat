@@ -12,7 +12,7 @@ public class HumanoidController : MonoBehaviour
 
     protected float m_Move;
     protected float m_Strafe;
-    protected bool m_IsDead;
+    public bool m_IsDead;
     public bool m_IsAttacking;
 
     protected Animator anim;
@@ -62,7 +62,6 @@ public class HumanoidController : MonoBehaviour
     // char attack
     protected void Attack()
     {
-        Debug.Log("Player attack begins");
         m_IsAttacking = true;
         ClearAnim();
         anim.SetBool("isAttacking", true);
@@ -82,7 +81,6 @@ public class HumanoidController : MonoBehaviour
         yield return new WaitForSeconds(2.5f);
         m_WeaponCollider.enabled = false;
         m_IsAttacking = false;
-        //Debug.Log("Player attack ends");
     }
 
     protected IEnumerator PlayWeaponSound()

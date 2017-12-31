@@ -33,6 +33,12 @@ public class EnemyController : HumanoidController {
     override protected void Update()
     {
         if (m_IsDead) return;
+        if (IsPlayerDead())
+        {
+            ClearAnim();
+            anim.SetBool("isIdle", true);
+            return;
+        }
 
         // if killed, do dead stuff
         if (m_CharacterState.m_Health <= 0)
@@ -68,7 +74,7 @@ public class EnemyController : HumanoidController {
             }
 
             // avoid attacks
-            else if (IsPlayerIsAttacking() && ! IsSideStepOnCooldown())
+            else if (IsPlayerAttacking() && ! IsSideStepOnCooldown())
             {
                 StartSideStep();
             }
@@ -129,9 +135,15 @@ public class EnemyController : HumanoidController {
     }
 
     // returns whether the player is in the process of an attack
-    private bool IsPlayerIsAttacking()
+    private bool IsPlayerAttacking()
     {
         return m_Player.GetComponent<PlayerController>().m_IsAttacking;
+    }
+
+    // returns whether the player is dead
+    private bool IsPlayerDead()
+    {
+        return m_Player.GetComponent<PlayerController>().m_IsDead;
     }
 
     // returns whether sidestep is on cooldown or not

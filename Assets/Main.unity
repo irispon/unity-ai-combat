@@ -226,6 +226,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MoveSpeed: 10
   m_CharacterState: {fileID: 87518684}
+  m_WeaponSwingSound: {fileID: 8300000, guid: d6150f3a9e3062b40b724a36eb7cd689, type: 3}
+  m_DeathSound: {fileID: 8300000, guid: e838b2cac2b1ab049a8700d399702f91, type: 3}
+  m_IsDead: 0
   m_IsAttacking: 0
 --- !u!114 &87518681
 MonoBehaviour:
@@ -240,6 +243,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   opponent: Enemy
   m_WeaponDamage: 20
+  m_AudioSource: {fileID: 87518685}
+  m_WeaponHitAC: {fileID: 8300000, guid: 1eae7e37e14f08f4d827f3bf650d7c10, type: 3}
 --- !u!136 &87518682
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -299,7 +304,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -2941,6 +2946,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MoveSpeed: 5
   m_CharacterState: {fileID: 1367685208}
+  m_WeaponSwingSound: {fileID: 8300000, guid: d6150f3a9e3062b40b724a36eb7cd689, type: 3}
+  m_DeathSound: {fileID: 8300000, guid: e838b2cac2b1ab049a8700d399702f91, type: 3}
+  m_IsDead: 0
   m_IsAttacking: 0
   m_Player: {fileID: 87518678}
   m_RotationSpeed: 0.1
@@ -2977,6 +2985,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   opponent: Player
   m_WeaponDamage: 20
+  m_AudioSource: {fileID: 1367685209}
+  m_WeaponHitAC: {fileID: 8300000, guid: 1eae7e37e14f08f4d827f3bf650d7c10, type: 3}
 --- !u!4 &1367685207
 Transform:
   m_ObjectHideFlags: 0

@@ -21,9 +21,7 @@ public class PlayerController : HumanoidController {
 
         if (m_CharacterState.m_Health <= 0)
         {
-            ClearAnim();
-            anim.SetBool("isDead", true);
-            m_IsDead = true;
+            MakeDead();
             return;
         }
         
