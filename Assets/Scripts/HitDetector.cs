@@ -7,6 +7,8 @@ public class HitDetector : MonoBehaviour {
 
     public string opponent;
     public int m_WeaponDamage = 20;
+    public AudioSource m_AudioSource;
+    public AudioClip m_WeaponHitAC;
 
     private CharacterState m_CharacterState;
 
@@ -22,6 +24,7 @@ public class HitDetector : MonoBehaviour {
         if(other.CompareTag(opponent + "Weapon"))
         {
             m_CharacterState.TakeDamage(m_WeaponDamage);
+            m_AudioSource.PlayOneShot(m_WeaponHitAC);
         }
     }
 }

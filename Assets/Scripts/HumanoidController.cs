@@ -7,6 +7,7 @@ public class HumanoidController : MonoBehaviour
 {    
     public float m_MoveSpeed = 10.0f;
     public CharacterState m_CharacterState;
+    public AudioClip m_WeaponSwingAC;
 
     protected float m_Move;
     protected float m_Strafe;
@@ -86,7 +87,7 @@ public class HumanoidController : MonoBehaviour
     protected IEnumerator PlayWeaponSound()
     {
         yield return new WaitForSeconds(.8f);
-        swingAudioSource.Play();
+        swingAudioSource.PlayOneShot(m_WeaponSwingAC);
     }
 
     // kill and cleanup enemy
