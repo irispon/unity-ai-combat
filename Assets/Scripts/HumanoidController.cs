@@ -73,19 +73,19 @@ public class HumanoidController : MonoBehaviour
 
     protected IEnumerator EnableWeaponCollider()
     {
-        yield return new WaitForSeconds(.6f);
+        yield return new WaitForSeconds(.7f);
          m_WeaponCollider.enabled = true;
     }
 
     protected IEnumerator DisableWeaponCollider()
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1.1f);
         m_WeaponCollider.enabled = false;
     }
 
     protected IEnumerator PlayWeaponSound()
     {
-        yield return new WaitForSeconds(.8f);
+        yield return new WaitForSeconds(.9f);
         m_AudioSource.PlayOneShot(m_WeaponSwingSound);
     }
 
