@@ -5,10 +5,15 @@ using UnityEngine.UI;
 
 public class PlayerController : HumanoidController {
 
+    public GameObject m_MainMenu;
+
     // Use this for initialization
     override protected void Start () 
 	{
         Cursor.lockState = CursorLockMode.Locked;
+        m_MainMenu.SetActive(false);
+        Time.timeScale = 1;
+
         m_WeaponColliderName = "PlayerWeapon";
         base.Start();
 	}
@@ -50,9 +55,22 @@ public class PlayerController : HumanoidController {
             anim.SetBool("isIdle", true);
         }
 
+        // toggle main menu
         if (Input.GetKeyDown("escape"))
         {
-            Cursor.lockState = CursorLockMode.None;
+            if(! m_MainMenu.activeSelf)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                m_MainMenu.SetActive(true);
+                Time.timeScale = 0;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                m_MainMenu.SetActive(false);
+                Time.timeScale = 1;
+            }
+            
         }
     }
 }
