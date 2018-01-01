@@ -68,6 +68,7 @@ public class HumanoidController : MonoBehaviour
         StartCoroutine(EnableWeaponCollider());
         StartCoroutine(PlayWeaponSound());
         StartCoroutine(DisableWeaponCollider());
+        StartCoroutine(ReenableAttacking());
     }
 
     protected IEnumerator EnableWeaponCollider()
@@ -80,13 +81,18 @@ public class HumanoidController : MonoBehaviour
     {
         yield return new WaitForSeconds(2.5f);
         m_WeaponCollider.enabled = false;
-        m_IsAttacking = false;
     }
 
     protected IEnumerator PlayWeaponSound()
     {
         yield return new WaitForSeconds(.8f);
         m_AudioSource.PlayOneShot(m_WeaponSwingSound);
+    }
+
+    protected IEnumerator ReenableAttacking()
+    {
+        yield return new WaitForSeconds(3.0f);
+        m_IsAttacking = false;
     }
 
     // kill and cleanup enemy
